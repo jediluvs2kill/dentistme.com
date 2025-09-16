@@ -17,29 +17,27 @@ const categoryDetails: { [key in ActivityCategory]: { icon: React.ReactNode; col
 
 const ActivityFeed: React.FC<ActivityFeedProps> = ({ activities }) => {
   return (
-    <div className="bg-white border border-slate-200 rounded-lg">
-      <ul className="divide-y divide-slate-200">
-        {activities.map(activity => {
-          const { icon, color } = categoryDetails[activity.category];
-          const date = new Date(activity.date);
-          const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-          return (
-            <li key={activity.id} className="p-4 flex items-start space-x-4">
-              <div className={`p-3 rounded-full ${color}`}>
-                {icon}
+    <ul className="divide-y divide-slate-200">
+      {activities.map(activity => {
+        const { icon, color } = categoryDetails[activity.category];
+        const date = new Date(activity.date);
+        const formattedDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        return (
+          <li key={activity.id} className="px-6 py-4 flex items-start space-x-4">
+            <div className={`p-3 rounded-full ${color}`}>
+              {icon}
+            </div>
+            <div className="flex-1">
+              <div className="flex justify-between items-center">
+                 <p className="text-sm font-medium text-slate-800">{activity.description}</p>
+                 <p className="text-xs text-slate-500 whitespace-nowrap">{formattedDate}</p>
               </div>
-              <div className="flex-1">
-                <div className="flex justify-between items-center">
-                   <p className="text-sm font-medium text-slate-800">{activity.description}</p>
-                   <p className="text-xs text-slate-500 whitespace-nowrap">{formattedDate}</p>
-                </div>
-                <p className="text-sm text-slate-500 mt-1">{activity.category}</p>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+              <p className="text-sm text-slate-500 mt-1">{activity.category}</p>
+            </div>
+          </li>
+        );
+      })}
+    </ul>
   );
 };
 

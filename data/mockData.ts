@@ -1,33 +1,42 @@
 
-import { DentistProfile, ActivityLog, ActivityCategory, Review, PortfolioItem, Reel } from '../types';
+import { DentistProfile, ActivityLog, ActivityCategory, Review, PortfolioItem, Reel, Question } from '../types';
 
 const reviewsData: { [key: string]: Review[] } = {
   'evelyn-reed': [
     { patientName: 'The Miller Family', rating: 5, comment: 'Dr. Reed is fantastic with kids! She made my son\'s first experience with braces a positive one.', date: '2023-10-15' },
     { patientName: 'James P.', rating: 5, comment: 'Invisalign treatment was smooth and the results are incredible. Highly recommend.', date: '2023-08-22' },
+    { patientName: 'Chloe T.', rating: 4, comment: 'The treatment took a bit longer than expected, but the results are great. The staff is very friendly.', date: '2023-06-11' },
   ],
   'arjun-sharma': [
     { patientName: 'Aarav Singh', rating: 5, comment: 'Dr. Sharma restored my smile with implants. His attention to detail is second to none. A true artist.', date: '2023-11-01' },
     { patientName: 'Sunita K.', rating: 5, comment: 'The Digital Smile Design process was fascinating, and I couldn\'t be happier with my new veneers.', date: '2023-09-10' },
+    { patientName: 'Vikram Patel', rating: 4, comment: 'Excellent work on my crowns. The clinic is very modern. A bit on the expensive side, but worth it.', date: '2023-07-20' },
   ],
   'priya-verma': [
     { patientName: 'Rohan\'s Mother', rating: 5, comment: 'Dr. Verma is a magician with children. My anxious son now looks forward to his dental visits!', date: '2023-11-05' },
     { patientName: 'Community School Principal', rating: 5, comment: 'The dental health camp Dr. Verma organized was a huge success. She is a great asset to our community.', date: '2023-07-18' },
+    { patientName: 'Anjali Rao', rating: 4, comment: 'Very patient and kind with my daughter. The waiting time can sometimes be long.', date: '2023-09-02' },
   ],
   'kenji-tanaka': [
     { patientName: 'Yuki S.', rating: 5, comment: 'Saved a tooth other dentists said was lost. Dr. Tanaka\'s microscopic surgery is amazing.', date: '2023-09-28' },
+    { patientName: 'Akira M.', rating: 4, comment: 'Very professional and highly skilled. The procedure was complex but he handled it well. Communication could be slightly better for non-Japanese speakers.', date: '2023-10-12' },
   ],
   'maria-garcia': [
     { patientName: 'Sophia L.', rating: 5, comment: 'I\'m so confident with my smile now, thanks to Dr. Garcia. The whitening and bonding work was perfect.', date: '2023-10-20' },
+    { patientName: 'Carlos R.', rating: 4, comment: 'Good results on my veneers. The clinic is beautiful and modern. Follow-up scheduling was a bit difficult.', date: '2023-08-15' },
+    { patientName: 'Isabella M.', rating: 3, comment: 'The final result was okay, but the process felt rushed and I didn\'t feel my concerns were fully heard at first.', date: '2023-05-30'},
   ],
   'samuel-chen': [
     { patientName: 'David H.', rating: 5, comment: 'Dr. Chen is an expert periodontist. The implant surgery was painless and the results are perfect.', date: '2023-06-12' },
+    { patientName: 'Linda W.', rating: 4, comment: 'Very knowledgeable professor. He explained my gum condition clearly. His private practice has limited hours which can be tough to schedule.', date: '2023-09-05' },
   ],
   'lena-weber': [
     { patientName: 'Klaus M.', rating: 5, comment: 'The regenerative procedure for my gums was a success. Dr. Weber used the latest techniques and explained everything.', date: '2023-08-04' },
+    { patientName: 'Anna S.', rating: 5, comment: 'A true professional. She is very thorough and her approach is very scientific and reassuring.', date: '2023-10-18' },
   ],
   'carlos-rossi': [
      { patientName: 'Isabela F.', rating: 5, comment: 'Dr. Rossi provides excellent, compassionate care. His work in the community is inspiring.', date: '2023-10-02' },
+     { patientName: 'Miguel A.', rating: 4, comment: 'Great dentist for regular check-ups. The mobile clinic is an amazing idea, though sometimes the equipment is limited.', date: '2023-07-11' },
   ]
 };
 
@@ -50,6 +59,29 @@ export const reelsData: Reel[] = [
     { id: 'reel4', dentistId: 'carlos-rossi', videoUrl: '#', thumbnailUrl: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop', caption: 'Our mobile clinic reaching the heart of the community. Smiles for miles!', timestamp: '2023-11-12T12:00:00Z', views: 18000, likes: 1200 },
     { id: 'reel5', dentistId: 'evelyn-reed', videoUrl: '#', thumbnailUrl: 'https://images.unsplash.com/photo-1597554939023-8fa40e7d23a7?q=80&w=800&auto=format&fit=crop', caption: 'Braces off! That first look in the mirror is why I love my job. #Orthodontics', timestamp: '2023-11-10T17:45:00Z', views: 9800, likes: 720, linkedCaseStudyId: 'er1' },
     { id: 'reel6', dentistId: 'kenji-tanaka', videoUrl: '#', thumbnailUrl: 'https://images.unsplash.com/photo-1631551570308-a46132456475?q=80&w=800&auto=format&fit=crop', caption: 'Under the microscope: a glimpse into modern endodontics.', timestamp: '2023-11-08T11:00:00Z', views: 5400, likes: 450 },
+];
+
+export const qAndAData: Question[] = [
+    {
+        id: 'q1',
+        questionerName: 'Sarah J.',
+        text: 'What are the best options for replacing a single missing front tooth? I\'m nervous about surgery.',
+        timestamp: '2023-11-21T14:00:00Z',
+        answers: [
+            { id: 'a1-1', dentistId: 'arjun-sharma', text: 'Great question, Sarah. The gold standard is a dental implant because it feels and functions like a natural tooth without affecting adjacent teeth. However, if you\'re hesitant about surgery, a dental bridge or even a removable partial denture are viable alternatives we could discuss.', upvotes: 18, timestamp: '2023-11-21T15:30:00Z'},
+            { id: 'a1-2', dentistId: 'samuel-chen', text: 'As a periodontist, I often recommend dental implants for their long-term stability and bone health benefits. The surgery is very routine with minimal discomfort. A bridge is a good non-surgical option but requires preparing the teeth on either side of the gap.', upvotes: 12, timestamp: '2023-11-21T16:00:00Z'},
+        ]
+    },
+    {
+        id: 'q2',
+        questionerName: 'Anonymous',
+        text: 'My gums bleed every time I floss. Is this normal? Should I stop flossing?',
+        timestamp: '2023-11-20T09:00:00Z',
+        answers: [
+            { id: 'a2-1', dentistId: 'lena-weber', text: 'Bleeding gums are a common sign of early gum disease (gingivitis), which is caused by plaque buildup. It\'s crucial that you *don\'t* stop flossing. Gentle, consistent flossing will remove the plaque and, within a week or two, the bleeding should subside. If it continues, please see a dentist for a professional cleaning.', upvotes: 25, timestamp: '2023-11-20T09:45:00Z'},
+            { id: 'a2-2', dentistId: 'priya-verma', text: 'Definitely don\'t stop! Think of it like washing a wound - it might be sensitive at first, but it\'s necessary for healing. Make sure you are using the correct technique, curving the floss around each tooth. A soft-bristled brush also helps.', upvotes: 9, timestamp: '2023-11-20T11:00:00Z'},
+        ]
+    },
 ];
 
 
@@ -227,10 +259,10 @@ const descriptions = {
 type ActivityLevel = 'high' | 'medium' | 'low';
 const activityLevels: { [key: string]: ActivityLevel } = {
     'evelyn-reed': 'medium',
-    'arjun-sharma': 'medium',
+    'arjun-sharma': 'high',
     'priya-verma': 'high',
-    'kenji-tanaka': 'high',
-    'maria-garcia': 'medium',
+    'kenji-tanaka': 'medium',
+    'maria-garcia': 'high',
     'samuel-chen': 'low',
     'lena-weber': 'low',
     'carlos-rossi': 'high',

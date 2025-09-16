@@ -1,10 +1,13 @@
+
 import React from 'react';
 import { DentistProfile } from '../types';
-import { BriefcaseIcon, AcademicCapIcon, MailIcon, PhoneIcon, LocationMarkerIcon, TranslateIcon, CheckCircleIcon } from './icons';
+import { BriefcaseIcon, AcademicCapIcon, MailIcon, PhoneIcon, LocationMarkerIcon, TranslateIcon, CheckCircleIcon, CalendarPlusIcon } from './icons';
 import EndorsementsSection from './EndorsementsSection';
+import Button from './Button';
 
 interface ProfileSidebarProps {
   profile: DentistProfile;
+  onBookAppointment: () => void;
 }
 
 const SidebarSection: React.FC<{ title: string; icon: React.ReactNode; children: React.ReactNode }> = ({ title, icon, children }) => (
@@ -19,9 +22,14 @@ const SidebarSection: React.FC<{ title: string; icon: React.ReactNode; children:
     </div>
 );
 
-const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
+const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile, onBookAppointment }) => {
   return (
     <aside className="space-y-8">
+       <Button onClick={onBookAppointment} variant="primary" className="w-full">
+        <CalendarPlusIcon className="w-5 h-5 mr-2" />
+        Book Appointment
+      </Button>
+
       <div>
         <h2 className="text-xl font-bold text-slate-800">About</h2>
         <p className="mt-2 text-slate-600">{profile.bio}</p>

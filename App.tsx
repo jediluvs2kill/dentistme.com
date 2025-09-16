@@ -1,23 +1,25 @@
 
 import React, { useState, useMemo, useCallback } from 'react';
-import { DentistProfile, ActivityLog, ProfileStats, Reel } from './types';
+import { DentistProfile, ActivityLog, ProfileStats, Reel, Question } from './types';
 import ProfilePage from './components/ProfilePage';
 import HomePage from './components/HomePage';
 import DirectoryPage from './components/DirectoryPage';
 import LeaderboardPage from './components/LeaderboardPage';
 import ReelsPage from './components/ReelsPage';
+import QandAPage from './components/QandAPage';
 import Button from './components/Button';
-import { profiles, generateActivitiesForProfile, reelsData } from './data/mockData';
+import { profiles, generateActivitiesForProfile, reelsData, qAndAData } from './data/mockData';
 import { calculateStatsAndAchievements } from './services/gamification';
-import { LeaderboardIcon, VideoCameraIcon } from './components/icons';
+import { LeaderboardIcon, VideoCameraIcon, QuestionMarkCircleIcon } from './components/icons';
 import ReelPlayerModal from './components/ReelPlayerModal';
 
-type Page = 'home' | 'directory' | 'profile' | 'leaderboard' | 'reels';
+type Page = 'home' | 'directory' | 'profile' | 'leaderboard' | 'reels' | 'qanda';
 
 const App: React.FC = () => {
   const [allProfiles] = useState<DentistProfile[]>(profiles);
   const [currentProfileId, setCurrentProfileId] = useState<string | null>(null);
   const [allReels] = useState<Reel[]>(reelsData);
+  const [allQuestions] = useState<Question[]>(qAndAData);
   const [selectedReel, setSelectedReel] = useState<Reel | null>(null);
   
   const [allActivities] = useState<Record<string, ActivityLog[]>>(() => {
@@ -116,6 +118,14 @@ const App: React.FC = () => {
             onViewProfile={handleViewProfile}
           />
         );
+      case 'qanda':
+        return (
+          <QandAPage 
+            questions={allQuestions}
+            profilesById={profilesById}
+            onViewProfile={handleViewProfile}
+          />
+        );
       case 'home':
       default:
         return <HomePage onNavigateToDirectory={() => navigate('directory')} />;
@@ -134,18 +144,18 @@ const App: React.FC = () => {
               <span className="font-bold text-2xl ml-2 text-slate-800">DentistMe.com</span>
             </button>
             <div className="flex items-center space-x-2 md:space-x-4">
-              {currentPage !== 'reels' && (
-                <Button onClick={() => navigate('reels')} variant="secondary">
-                  <VideoCameraIcon className="w-5 h-5 md:mr-2" />
-                  <span className="hidden md:inline">Reels</span>
-                </Button>
-              )}
-              {currentPage !== 'leaderboard' && (
-                <Button onClick={() => navigate('leaderboard')} variant="secondary">
-                  <LeaderboardIcon className="w-5 h-5 md:mr-2" />
-                   <span className="hidden md:inline">Leaderboards</span>
-                </Button>
-              )}
+              <Button onClick={() => navigate('qanda')} variant="secondary">
+                  <QuestionMarkCircleIcon className="w-5 h-5 md:mr-2" />
+                  <span className="hidden md:inline">Q&A</span>
+              </Button>
+              <Button onClick={() => navigate('reels')} variant="secondary">
+                <VideoCameraIcon className="w-5 h-5 md:mr-2" />
+                <span className="hidden md:inline">Reels</span>
+              </Button>
+              <Button onClick={() => navigate('leaderboard')} variant="secondary">
+                <LeaderboardIcon className="w-5 h-5 md:mr-2" />
+                 <span className="hidden md:inline">Leaderboards</span>
+              </Button>
                <Button onClick={() => navigate('directory')} variant="primary">Find a Dentist</Button>
             </div>
           </div>

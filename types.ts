@@ -42,6 +42,22 @@ export interface Reel {
   linkedCaseStudyId?: string;
 }
 
+export interface Answer {
+  id: string;
+  dentistId: string;
+  text: string;
+  upvotes: number;
+  timestamp: string;
+}
+
+export interface Question {
+  id: string;
+  questionerName: string;
+  text: string;
+  timestamp: string;
+  answers: Answer[];
+}
+
 export interface DentistProfile {
   id: string;
   name: string;
