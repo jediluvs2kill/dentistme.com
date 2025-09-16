@@ -1,3 +1,4 @@
+
 export enum ActivityCategory {
   PATIENT_CARE = 'Patient Care',
   CONTINUING_EDUCATION = 'Continuing Education',
@@ -27,6 +28,18 @@ export interface PortfolioItem {
   description: string;
   imageUrl: string;
   category: string;
+}
+
+export interface Reel {
+  id: string;
+  dentistId: string;
+  videoUrl: string; // Placeholder
+  thumbnailUrl: string;
+  caption: string;
+  timestamp: string;
+  views: number;
+  likes: number;
+  linkedCaseStudyId?: string;
 }
 
 export interface DentistProfile {

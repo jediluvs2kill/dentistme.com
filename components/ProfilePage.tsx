@@ -1,12 +1,13 @@
+
 import React, { useState } from 'react';
-import { DentistProfile, ProfileStats, ActivityLog, ActivityCategory, Badge } from '../types';
+import { DentistProfile, ProfileStats, ActivityLog, ActivityCategory, Badge, Reel } from '../types';
 import ProfileHeader from './ProfileHeader';
 import ProfileSidebar from './ProfileSidebar';
 import ContributionGraph from './ContributionGraph';
 import ActivityFeed from './ActivityFeed';
 import LogEffortModal from './LogEffortModal';
 import Button from './Button';
-import { PlusIcon } from './icons';
+import { PlusIcon, VideoCameraIcon, PlayIcon } from './icons';
 import ActivityTooltip from './ActivityTooltip';
 import AchievementsSection from './AchievementsSection';
 import PatientReviews from './PatientReviews';
@@ -18,11 +19,13 @@ interface ProfilePageProps {
   stats: ProfileStats;
   activities: ActivityLog[];
   badges: Badge[];
+  reels: Reel[];
   onLogEffort: (newLog: Omit<ActivityLog, 'id'>) => void;
   onNavigateToDirectory: () => void;
+  onSelectReel: (reel: Reel) => void;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ profile, stats, activities, badges, onLogEffort, onNavigateToDirectory }) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ profile, stats, activities, badges, reels, onLogEffort, onNavigateToDirectory, onSelectReel }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [tooltipData, setTooltipData] = useState<{ activities: ActivityLog[], position: { top: number, left: number } } | null>(null);
 
@@ -67,8 +70,26 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, stats, activities, b
             <h2 className="text-lg font-semibold text-slate-800 mb-4">{stats.totalContributions} contributions in the last year</h2>
             <ContributionGraph activities={activities} onDayClick={handleDayClick} />
           </div>
+
+          {reels.length > 0 && (
+            <div className="bg-white border border-slate-200 rounded-lg p-6">
+              <h2 className="text-xl font-bold text-slate-800 mb-4">Latest Reels</h2>
+              <div className="flex overflow-x-auto space-x-4 pb-4">
+                {reels.map(reel => (
+                  <div key={reel.id} onClick={() => onSelectReel(reel)} className="group relative flex-shrink-0 w-40 h-56 rounded-lg overflow-hidden cursor-pointer shadow-md hover:shadow-xl transition-shadow">
+                    <img src={reel.thumbnailUrl} alt={reel.caption} className="w-full h-full object-cover"/>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <PlayIcon className="w-12 h-12 text-white/80" />
+                    </div>
+                    <p className="absolute bottom-0 left-0 p-2 text-white text-xs font-medium line-clamp-2">{reel.caption}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           
-          <PortfolioSection portfolioItems={profile.portfolio} />
+          <PortfolioSection portfolioItems={profile.portfolio} allReels={reels} onSelectReel={onSelectReel}/>
           
           <PatientReviews reviews={profile.reviews} averageRating={stats.averageRating} />
 

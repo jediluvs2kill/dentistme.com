@@ -1,19 +1,24 @@
+
 import React, { useState, useMemo, useCallback } from 'react';
-import { DentistProfile, ActivityLog, ProfileStats } from './types';
+import { DentistProfile, ActivityLog, ProfileStats, Reel } from './types';
 import ProfilePage from './components/ProfilePage';
 import HomePage from './components/HomePage';
 import DirectoryPage from './components/DirectoryPage';
 import LeaderboardPage from './components/LeaderboardPage';
+import ReelsPage from './components/ReelsPage';
 import Button from './components/Button';
-import { profiles, generateActivitiesForProfile } from './data/mockData';
+import { profiles, generateActivitiesForProfile, reelsData } from './data/mockData';
 import { calculateStatsAndAchievements } from './services/gamification';
-import { LeaderboardIcon } from './components/icons';
+import { LeaderboardIcon, VideoCameraIcon } from './components/icons';
+import ReelPlayerModal from './components/ReelPlayerModal';
 
-type Page = 'home' | 'directory' | 'profile' | 'leaderboard';
+type Page = 'home' | 'directory' | 'profile' | 'leaderboard' | 'reels';
 
 const App: React.FC = () => {
   const [allProfiles] = useState<DentistProfile[]>(profiles);
   const [currentProfileId, setCurrentProfileId] = useState<string | null>(null);
+  const [allReels] = useState<Reel[]>(reelsData);
+  const [selectedReel, setSelectedReel] = useState<Reel | null>(null);
   
   const [allActivities] = useState<Record<string, ActivityLog[]>>(() => {
     const initialActivities: Record<string, ActivityLog[]> = {};
@@ -34,6 +39,13 @@ const App: React.FC = () => {
     });
     return data;
   }, [allProfiles, allActivities]);
+  
+  const profilesById = useMemo(() => {
+    return allProfiles.reduce((acc, profile) => {
+      acc[profile.id] = profile;
+      return acc;
+    }, {} as Record<string, DentistProfile>);
+  }, [allProfiles]);
 
   const { dentistProfile, activityLogs, profileStats, earnedBadges } = useMemo(() => {
     if (!currentProfileId) return { dentistProfile: null, activityLogs: [], profileStats: null, earnedBadges: [] };
@@ -51,13 +63,12 @@ const App: React.FC = () => {
 
 
   const handleLogEffort = useCallback((newLog: Omit<ActivityLog, 'id'>) => {
-    // This function is kept for potential future use, but activity generation is static for the demo
     console.log("Effort logged (demo only):", newLog);
   }, []);
 
   const handleViewProfile = (profileId: string) => {
     setCurrentProfileId(profileId);
-    setCurrentPage('profile');
+    navigate('profile');
   };
   
   const navigate = (page: Page) => {
@@ -75,8 +86,10 @@ const App: React.FC = () => {
             stats={profileStats} 
             activities={activityLogs} 
             badges={earnedBadges}
+            reels={allReels.filter(r => r.dentistId === dentistProfile.id)}
             onLogEffort={handleLogEffort}
             onNavigateToDirectory={() => navigate('directory')}
+            onSelectReel={setSelectedReel}
           />
         );
       case 'directory':
@@ -93,6 +106,15 @@ const App: React.FC = () => {
                 profileData={Object.values(allProfileData)}
                 onViewProfile={handleViewProfile}
             />
+        );
+      case 'reels':
+        return (
+          <ReelsPage 
+            reels={allReels} 
+            profilesById={profilesById}
+            onSelectReel={setSelectedReel}
+            onViewProfile={handleViewProfile}
+          />
         );
       case 'home':
       default:
@@ -111,14 +133,17 @@ const App: React.FC = () => {
               </svg>
               <span className="font-bold text-2xl ml-2 text-slate-800">DentistMe.com</span>
             </button>
-            <div className="flex items-center space-x-4">
-              {currentPage !== 'home' && (
-                <Button onClick={() => navigate('home')} variant="secondary">Home</Button>
+            <div className="flex items-center space-x-2 md:space-x-4">
+              {currentPage !== 'reels' && (
+                <Button onClick={() => navigate('reels')} variant="secondary">
+                  <VideoCameraIcon className="w-5 h-5 md:mr-2" />
+                  <span className="hidden md:inline">Reels</span>
+                </Button>
               )}
               {currentPage !== 'leaderboard' && (
                 <Button onClick={() => navigate('leaderboard')} variant="secondary">
-                  <LeaderboardIcon className="w-5 h-5 mr-2" />
-                  Leaderboards
+                  <LeaderboardIcon className="w-5 h-5 md:mr-2" />
+                   <span className="hidden md:inline">Leaderboards</span>
                 </Button>
               )}
                <Button onClick={() => navigate('directory')} variant="primary">Find a Dentist</Button>
@@ -129,6 +154,13 @@ const App: React.FC = () => {
       <main>
         {renderPage()}
       </main>
+      {selectedReel && profilesById[selectedReel.dentistId] && (
+        <ReelPlayerModal 
+            reel={selectedReel}
+            dentist={profilesById[selectedReel.dentistId]}
+            onClose={() => setSelectedReel(null)}
+        />
+      )}
     </div>
   );
 };

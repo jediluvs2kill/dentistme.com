@@ -1,4 +1,5 @@
-import { DentistProfile, ActivityLog, ActivityCategory, Review, PortfolioItem } from '../types';
+
+import { DentistProfile, ActivityLog, ActivityCategory, Review, PortfolioItem, Reel } from '../types';
 
 const reviewsData: { [key: string]: Review[] } = {
   'evelyn-reed': [
@@ -35,12 +36,21 @@ const portfolioData: { [key: string]: PortfolioItem[] } = {
     { id: 'er1', title: 'Adolescent Invisalign Treatment', description: 'A 14-month Invisalign case to correct crowding and improve bite alignment for a 16-year-old patient.', imageUrl: 'https://images.unsplash.com/photo-1629905675095-2c218e261324?q=80&w=800', category: 'Orthodontics' },
   ],
   'arjun-sharma': [
-    { id: 'as1', title: 'Full Mouth Rehabilitation', description: 'Complete restoration of function and aesthetics using a combination of crowns, bridges, and dental implants.', imageUrl: 'https://images.unsplash.com/photo-1629905675095-2c218e261324?q=80&w=800', category: 'Prosthodontics' },
+    { id: 'as1', title: 'Full Mouth Rehabilitation', description: 'Complete restoration of function and aesthetics using a combination of crowns, bridges, and dental implants.', imageUrl: 'https://images.unsplash.com/photo-1582794404639-6b5a9820a9a2?q=80&w=800', category: 'Prosthodontics' },
   ],
   'maria-garcia': [
-    { id: 'mg1', title: 'Porcelain Veneer Smile Makeover', description: 'Placement of 8 porcelain veneers to transform the shape, color, and alignment of the upper anterior teeth.', imageUrl: 'https://images.unsplash.com/photo-1629905675095-2c218e261324?q=80&w=800', category: 'Cosmetic Dentistry' },
+    { id: 'mg1', title: 'Porcelain Veneer Smile Makeover', description: 'Placement of 8 porcelain veneers to transform the shape, color, and alignment of the upper anterior teeth.', imageUrl: 'https://images.unsplash.com/photo-1606811218552-3588107f0f62?q=80&w=800', category: 'Cosmetic Dentistry' },
   ]
 };
+
+export const reelsData: Reel[] = [
+    { id: 'reel1', dentistId: 'maria-garcia', videoUrl: '#', thumbnailUrl: 'https://images.unsplash.com/photo-1606811218552-3588107f0f62?q=80&w=800&auto=format&fit=crop', caption: 'The final reveal of a beautiful smile makeover! ✨ So rewarding to see this confidence boost.', timestamp: '2023-11-20T10:00:00Z', views: 12500, likes: 890, linkedCaseStudyId: 'mg1' },
+    { id: 'reel2', dentistId: 'arjun-sharma', videoUrl: '#', thumbnailUrl: 'https://images.unsplash.com/photo-1618837521268-9189a1b97062?q=80&w=800&auto=format&fit=crop', caption: 'A quick look at the precision of digital implant surgery. Technology makes everything better!', timestamp: '2023-11-18T14:30:00Z', views: 8200, likes: 640, linkedCaseStudyId: 'as1' },
+    { id: 'reel3', dentistId: 'priya-verma', videoUrl: '#', thumbnailUrl: 'https://images.unsplash.com/photo-1593352219757-0a24151d2f79?q=80&w=800&auto=format&fit=crop', caption: 'First dental visit for this little champ! We make it fun and fearless. 🦁', timestamp: '2023-11-15T09:15:00Z', views: 25000, likes: 1500 },
+    { id: 'reel4', dentistId: 'carlos-rossi', videoUrl: '#', thumbnailUrl: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=800&auto=format&fit=crop', caption: 'Our mobile clinic reaching the heart of the community. Smiles for miles!', timestamp: '2023-11-12T12:00:00Z', views: 18000, likes: 1200 },
+    { id: 'reel5', dentistId: 'evelyn-reed', videoUrl: '#', thumbnailUrl: 'https://images.unsplash.com/photo-1597554939023-8fa40e7d23a7?q=80&w=800&auto=format&fit=crop', caption: 'Braces off! That first look in the mirror is why I love my job. #Orthodontics', timestamp: '2023-11-10T17:45:00Z', views: 9800, likes: 720, linkedCaseStudyId: 'er1' },
+    { id: 'reel6', dentistId: 'kenji-tanaka', videoUrl: '#', thumbnailUrl: 'https://images.unsplash.com/photo-1631551570308-a46132456475?q=80&w=800&auto=format&fit=crop', caption: 'Under the microscope: a glimpse into modern endodontics.', timestamp: '2023-11-08T11:00:00Z', views: 5400, likes: 450 },
+];
 
 
 export const profiles: DentistProfile[] = [
