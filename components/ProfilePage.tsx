@@ -9,6 +9,9 @@ import Button from './Button';
 import { PlusIcon } from './icons';
 import ActivityTooltip from './ActivityTooltip';
 import AchievementsSection from './AchievementsSection';
+import PatientReviews from './PatientReviews';
+import PortfolioSection from './PortfolioSection';
+import WeeklyGoals from './WeeklyGoals';
 
 interface ProfilePageProps {
   profile: DentistProfile;
@@ -55,14 +58,19 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ profile, stats, activities, b
 
       <ProfileHeader profile={profile} stats={stats} />
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <div className="lg:col-span-1">
+        <div className="lg:col-span-1 space-y-8">
           <ProfileSidebar profile={profile} />
+          <WeeklyGoals activities={activities} />
         </div>
         <div className="lg:col-span-3 space-y-8">
           <div className="bg-white border border-slate-200 rounded-lg p-6" onClick={() => tooltipData && setTooltipData(null)}>
             <h2 className="text-lg font-semibold text-slate-800 mb-4">{stats.totalContributions} contributions in the last year</h2>
             <ContributionGraph activities={activities} onDayClick={handleDayClick} />
           </div>
+          
+          <PortfolioSection portfolioItems={profile.portfolio} />
+          
+          <PatientReviews reviews={profile.reviews} averageRating={stats.averageRating} />
 
           <AchievementsSection badges={badges} />
 

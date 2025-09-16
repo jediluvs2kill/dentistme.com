@@ -1,17 +1,31 @@
 import React from 'react';
 import { DentistProfile, ProfileStats } from '../types';
-import { LocationMarkerIcon, ChartBarIcon } from './icons';
+import { LocationMarkerIcon, ChartBarIcon, StarIconFilled, CheckCircleIcon } from './icons';
 import Button from './Button';
 
 interface DentistCardProps {
   profile: DentistProfile;
   stats: ProfileStats;
   onViewProfile: (profileId: string) => void;
+  onCompareToggle: (profileId: string, isSelected: boolean) => void;
+  isSelectedForCompare: boolean;
+  isCompareDisabled: boolean;
 }
 
-const DentistCard: React.FC<DentistCardProps> = ({ profile, stats, onViewProfile }) => {
+const DentistCard: React.FC<DentistCardProps> = ({ profile, stats, onViewProfile, onCompareToggle, isSelectedForCompare, isCompareDisabled }) => {
   return (
-    <div className="bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col p-6">
+    <div className="bg-white border border-slate-200 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col p-6 relative">
+       <div className="absolute top-4 right-4">
+          <input 
+            type="checkbox"
+            className="h-5 w-5 rounded border-slate-300 text-sky-600 focus:ring-sky-500 disabled:opacity-50"
+            title="Select to compare"
+            checked={isSelectedForCompare}
+            onChange={(e) => onCompareToggle(profile.id, e.target.checked)}
+            disabled={isCompareDisabled && !isSelectedForCompare}
+            />
+       </div>
+
       <div className="flex items-start space-x-4">
         <img 
             src={profile.avatarUrl} 
@@ -28,6 +42,19 @@ const DentistCard: React.FC<DentistCardProps> = ({ profile, stats, onViewProfile
         </div>
       </div>
       <div className="mt-4 text-sm text-slate-600 space-y-2 flex-grow">
+        <div className="flex items-center">
+            {stats.averageRating > 0 && (
+                <div className="flex items-center" title={`${stats.averageRating} average rating`}>
+                    {[...Array(5)].map((_, i) => (
+                        i < Math.round(stats.averageRating)
+                        ? <StarIconFilled key={i} className="w-4 h-4 text-amber-400" />
+                        : <StarIconFilled key={i} className="w-4 h-4 text-slate-300" />
+                    ))}
+                    <span className="ml-1.5 font-semibold text-slate-700">{stats.averageRating}</span>
+                    <span className="ml-1 text-slate-500">({profile.reviews.length})</span>
+                </div>
+            )}
+        </div>
         <p className="line-clamp-2">{profile.bio}</p>
         <div className="flex flex-wrap gap-2 pt-2">
             {profile.specializations.slice(0, 3).map(spec => (
@@ -37,8 +64,12 @@ const DentistCard: React.FC<DentistCardProps> = ({ profile, stats, onViewProfile
       </div>
       <div className="mt-6 border-t border-slate-200 pt-4 flex justify-between items-center">
         <div className="flex items-center text-sm text-slate-500">
-          <ChartBarIcon className="w-5 h-5 mr-2 text-emerald-500"/>
-          <span><span className="font-bold text-slate-700">{stats.totalContributions}</span> contributions</span>
+            {profile.acceptsNewPatients && (
+                <div className="flex items-center mr-4" title="Accepting new patients">
+                    <CheckCircleIcon className="w-5 h-5 mr-1 text-emerald-500" />
+                    <span className="font-medium text-emerald-700">Accepting Patients</span>
+                </div>
+            )}
         </div>
         <Button onClick={() => onViewProfile(profile.id)} variant="primary">
           View Profile

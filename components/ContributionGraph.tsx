@@ -31,10 +31,10 @@ const ContributionGraph: React.FC<ContributionGraphProps> = ({ activities, onDay
 
   const getColor = (level: number): string => {
     if (level === 0) return 'bg-slate-100 hover:bg-slate-200';
-    if (level <= 2) return 'bg-sky-200 hover:bg-sky-300';
-    if (level <= 5) return 'bg-sky-400 hover:bg-sky-500';
-    if (level <= 8) return 'bg-sky-600 hover:bg-sky-700';
-    return 'bg-sky-800 hover:bg-sky-900';
+    if (level <= 2) return 'bg-emerald-200 hover:bg-emerald-300';
+    if (level <= 5) return 'bg-yellow-300 hover:bg-yellow-400';
+    if (level <= 8) return 'bg-orange-400 hover:bg-orange-500';
+    return 'bg-red-500 hover:bg-red-600';
   };
   
   const monthLabels = [

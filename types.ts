@@ -14,6 +14,21 @@ export interface ActivityLog {
   effortLevel: number; // 1-4, for coloring the graph
 }
 
+export interface Review {
+  patientName: string;
+  rating: number; // 1-5
+  comment: string;
+  date: string;
+}
+
+export interface PortfolioItem {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  category: string;
+}
+
 export interface DentistProfile {
   id: string;
   name: string;
@@ -31,6 +46,11 @@ export interface DentistProfile {
     phone: string;
     address: string;
   };
+  reviews: Review[];
+  portfolio: PortfolioItem[];
+  endorsements: Record<string, number>;
+  acceptsNewPatients: boolean;
+  languages: string[];
 }
 
 export interface ProfileStats {
@@ -40,6 +60,7 @@ export interface ProfileStats {
   points: number;
   level: number;
   levelName: string;
+  averageRating: number;
 }
 
 export interface Badge {

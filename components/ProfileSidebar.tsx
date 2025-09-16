@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { DentistProfile } from '../types';
-import { BriefcaseIcon, AcademicCapIcon, MailIcon, PhoneIcon, LocationMarkerIcon } from './icons';
+import { BriefcaseIcon, AcademicCapIcon, MailIcon, PhoneIcon, LocationMarkerIcon, TranslateIcon, CheckCircleIcon } from './icons';
+import EndorsementsSection from './EndorsementsSection';
 
 interface ProfileSidebarProps {
   profile: DentistProfile;
@@ -25,16 +25,23 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
       <div>
         <h2 className="text-xl font-bold text-slate-800">About</h2>
         <p className="mt-2 text-slate-600">{profile.bio}</p>
+        
+        <div className="mt-4 flex items-center p-3 bg-slate-100 rounded-md">
+            <CheckCircleIcon className={`w-6 h-6 mr-3 ${profile.acceptsNewPatients ? 'text-emerald-500' : 'text-slate-400'}`} />
+            <span className={`text-sm font-medium ${profile.acceptsNewPatients ? 'text-slate-800' : 'text-slate-500'}`}>
+                {profile.acceptsNewPatients ? 'Accepting new patients' : 'Not accepting new patients'}
+            </span>
+        </div>
       </div>
       
+      <EndorsementsSection endorsements={profile.endorsements} />
+      
       <SidebarSection title="Specializations" icon={<BriefcaseIcon className="w-5 h-5 text-slate-400" />}>
-        <ul className="space-y-2">
+        <div className="flex flex-wrap gap-2">
           {profile.specializations.map((spec, index) => (
-            <li key={index} className="flex items-center">
-              <span className="text-sky-500 mr-2">▪</span> {spec}
-            </li>
+             <span key={index} className="px-2.5 py-1 bg-sky-100 text-sky-800 text-xs font-medium rounded-full">{spec}</span>
           ))}
-        </ul>
+        </div>
       </SidebarSection>
       
       <SidebarSection title="Certifications" icon={<AcademicCapIcon className="w-5 h-5 text-slate-400" />}>
@@ -46,6 +53,10 @@ const ProfileSidebar: React.FC<ProfileSidebarProps> = ({ profile }) => {
             </li>
           ))}
         </ul>
+      </SidebarSection>
+      
+      <SidebarSection title="Languages" icon={<TranslateIcon className="w-5 h-5 text-slate-400" />}>
+          <p className="text-slate-600">{profile.languages.join(', ')}</p>
       </SidebarSection>
 
       <SidebarSection title="Contact" icon={<MailIcon className="w-5 h-5 text-slate-400" />}>

@@ -1,5 +1,5 @@
-import { ActivityLog, ProfileStats, Badge, ActivityCategory } from '../types';
-import { TrophyIcon, MedalIcon, StarIcon, FireIcon, EducationIcon, CommunityIcon } from '../components/icons';
+import { ActivityLog, ProfileStats, Badge, ActivityCategory, Review } from '../types';
+import { TrophyIcon, EducationIcon, CommunityIcon, FireIcon, StarIcon } from '../components/icons';
 import React from 'react';
 
 // --- GAMIFICATION CONFIGURATION ---
@@ -39,7 +39,7 @@ const getBadgeIcon = (id: string): React.ReactNode => {
 
 // --- CALCULATION LOGIC ---
 
-export const calculateStatsAndAchievements = (logs: ActivityLog[]): { stats: ProfileStats; earnedBadges: Badge[] } => {
+export const calculateStatsAndAchievements = (logs: ActivityLog[], reviews: Review[]): { stats: ProfileStats; earnedBadges: Badge[] } => {
   // 1. Calculate Base Stats (Streaks, Contributions, Points)
   const contributionsByDate = new Map<string, number>();
   let totalPoints = 0;
@@ -83,6 +83,10 @@ export const calculateStatsAndAchievements = (logs: ActivityLog[]): { stats: Pro
   }
   
   const currentLevelInfo = LEVELS.slice().reverse().find(l => totalPoints >= l.minPoints) || LEVELS[0];
+  
+  const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+  const averageRating = reviews.length > 0 ? totalRating / reviews.length : 0;
+
 
   const stats: ProfileStats = {
     totalContributions: logs.length,
@@ -91,6 +95,7 @@ export const calculateStatsAndAchievements = (logs: ActivityLog[]): { stats: Pro
     points: totalPoints,
     level: currentLevelInfo.level,
     levelName: currentLevelInfo.name,
+    averageRating: parseFloat(averageRating.toFixed(1)),
   };
 
   // 2. Determine Earned Badges
